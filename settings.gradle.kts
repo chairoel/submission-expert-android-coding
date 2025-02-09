@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Github Apps"
 include(":app")
- 
+include(":favorite")
