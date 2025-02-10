@@ -56,6 +56,9 @@ dependencies {
     api(libs.androidx.navigation.ui.ktx)
 
 
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
+
     implementation(libs.room.runtime)
     implementation(libs.androidx.activity)
     ksp(libs.room.compiler)

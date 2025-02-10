@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    tools:context=".ui.UserAdapter">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ci_user_photo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:contentDescription="@string/user_picture"
+        android:src="?attr/colorSurfaceVariant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:foreground="@drawable/github_logo" />
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="?attr/colorOnPrimaryContainer"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tv_profile_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ci_user_photo"
+        app:layout_constraintTop_toTopOf="@id/ci_user_photo"
+        tools:text="@string/app_name" />
+
+    <ImageView
+        android:id="@+id/iv_user_type"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:contentDescription="@string/user_type"
+        android:src="@drawable/bg_user_type"
+        app:layout_constraintBottom_toBottomOf="@id/ci_user_photo"
+        app:layout_constraintStart_toStartOf="@id/tv_username"
+        app:layout_constraintTop_toBottomOf="@id/tv_username" />
+
+    <TextView
+        android:id="@+id/tv_profile_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:maxLines="2"
+        android:textColor="?attr/colorTertiary"
+        app:layout_constraintBottom_toBottomOf="@id/ci_user_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_user_type"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username"
+        tools:text="@tools:sample/lorem" />
+</androidx.constraintlayout.widget.ConstraintLayout>

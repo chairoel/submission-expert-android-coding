@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Github Apps</string>
+
+    <string name="user_picture">user picture</string>
+    <string name="user_type">User type</string>
+</resources>
