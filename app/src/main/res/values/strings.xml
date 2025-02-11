@@ -5,4 +5,6 @@
     <string name="title_settings">Settings</string>
 
     <string name="searchbar_hint">Who are you looking for?</string>
+    <string name="empty_data">empty_data</string>
+    <string name="data_not_found">Result Not Found</string>
 </resources>

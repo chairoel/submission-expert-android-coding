@@ -3,14 +3,32 @@ package com.mascill.githubapps.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.mascill.githubapps.core.data.Resource
+import com.mascill.githubapps.core.domain.model.User
 import com.mascill.githubapps.core.domain.usecase.UserUseCase
+import kotlinx.coroutines.launch
 
-class HomeViewModel(userUseCase: UserUseCase) : ViewModel() {
-    val users = userUseCase.getAllUser().asLiveData()
+class HomeViewModel(private val userUseCase: UserUseCase) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    private val _users = MutableLiveData<Resource<List<User>>>()
+    val users: LiveData<Resource<List<User>>> = _users
+
+    init {
+        fetchUsers()
     }
-    val text: LiveData<String> = _text
+
+    fun fetchUsers() {
+        viewModelScope.launch {
+            _users.postValue(Resource.Loading())
+
+            try {
+                userUseCase.getAllUser().collect { result ->
+                    _users.postValue(result)
+                }
+            } catch (exception: Exception) {
+                _users.postValue(Resource.Error(exception.localizedMessage ?: "Unknown error"))
+            }
+        }
+    }
 }
