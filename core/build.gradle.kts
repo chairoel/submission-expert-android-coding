@@ -58,6 +58,8 @@ dependencies {
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
 
     implementation(libs.room.runtime)
     implementation(libs.androidx.activity)

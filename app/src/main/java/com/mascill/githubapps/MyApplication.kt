@@ -2,6 +2,7 @@ package com.mascill.githubapps
 
 import android.app.Application
 import com.mascill.githubapps.core.di.databaseModule
+import com.mascill.githubapps.core.di.datastoreModule
 import com.mascill.githubapps.core.di.networkModule
 import com.mascill.githubapps.core.di.repositoryModule
 import com.mascill.githubapps.di.useCaseModule
@@ -21,6 +22,7 @@ class MyApplication:  Application() {
                 listOf(
                     databaseModule,
                     networkModule,
+                    datastoreModule,
                     repositoryModule,
                     useCaseModule,
                     viewModelModule

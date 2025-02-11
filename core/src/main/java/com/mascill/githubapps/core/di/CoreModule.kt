@@ -1,11 +1,15 @@
 package com.mascill.githubapps.core.di
 
 import androidx.room.Room
+import com.mascill.githubapps.core.data.ThemeRepository
 import com.mascill.githubapps.core.data.UserRepository
+import com.mascill.githubapps.core.data.source.datastore.DataStoreSource
+import com.mascill.githubapps.core.data.source.datastore.dataStore
 import com.mascill.githubapps.core.data.source.local.LocalDataSource
 import com.mascill.githubapps.core.data.source.local.room.GithubDatabase
 import com.mascill.githubapps.core.data.source.remote.RemoteDataSource
 import com.mascill.githubapps.core.data.source.remote.network.ApiService
+import com.mascill.githubapps.core.domain.repository.IThemeRepository
 import com.mascill.githubapps.core.domain.repository.IUserRepository
 import com.mascill.githubapps.core.utils.AppExecutors
 import okhttp3.OkHttpClient
@@ -45,6 +49,12 @@ val networkModule = module {
     }
 }
 
+val datastoreModule = module {
+    single {
+        DataStoreSource(androidContext().dataStore)
+    }
+}
+
 val repositoryModule = module {
     single { LocalDataSource(get()) }
     single { RemoteDataSource(get()) }
@@ -55,5 +65,8 @@ val repositoryModule = module {
             get(),
             get()
         )
+    }
+    single<IThemeRepository> {
+        ThemeRepository(get())
     }
 }
