@@ -1,13 +1,9 @@
 package com.mascill.githubapps.favorite
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import com.mascill.githubapps.core.domain.usecase.UserUseCase
 
-class FavoriteViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is favorite Fragment nih bossss"
-    }
-    val text: LiveData<String> = _text
+class FavoriteViewModel(userUseCase: UserUseCase) : ViewModel() {
+    val favoriteUser = userUseCase.getFavoriteUser().asLiveData()
 }
