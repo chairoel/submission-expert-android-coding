@@ -8,6 +8,8 @@
     <string name="empty_data">empty_data</string>
     <string name="data_not_found">Result Not Found</string>
 
+    <string name="dark_mode">Dark Mode</string>
+
     <string name="followers">Followers</string>
     <string name="repository">Repository</string>
     <string name="following">Following</string>

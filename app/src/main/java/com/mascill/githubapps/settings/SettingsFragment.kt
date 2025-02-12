@@ -4,35 +4,56 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import com.mascill.githubapps.R
+import com.mascill.githubapps.core.ui.viewmodel.ThemeViewModel
 import com.mascill.githubapps.databinding.FragmentSettingsBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private val themeViewModel: ThemeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
-
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        val view = binding.root
 
-        val textView: TextView = binding.textNotifications
-        settingsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding.appBar.toolbar
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.title =
+            getString(R.string.settings)
+
+
+        with(binding) {
+            themeViewModel.getTheme().observe(viewLifecycleOwner) {
+                if (it) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    switchTheme.isChecked = true
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    switchTheme.isChecked = false
+                }
+            }
+            switchTheme.setOnCheckedChangeListener { _, isChecked ->
+                themeViewModel.saveTheme(isChecked)
+            }
         }
-        return root
+
     }
 
     override fun onDestroyView() {
