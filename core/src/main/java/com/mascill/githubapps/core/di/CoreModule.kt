@@ -36,15 +36,8 @@ val databaseModule = module {
 
 val networkModule = module {
     single {
-        val authInterceptor = Interceptor { chain ->
-            val req = chain.request()
-            val requestHeaders = req.newBuilder()
-                .addHeader("token", "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")
-                .build()
-            chain.proceed(requestHeaders)
-        }
         OkHttpClient.Builder()
-            .addInterceptor(authInterceptor)
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
             .build()
