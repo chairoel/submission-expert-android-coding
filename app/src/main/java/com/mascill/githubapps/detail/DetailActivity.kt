@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
@@ -18,11 +19,12 @@ import com.mascill.githubapps.core.domain.model.User
 import com.mascill.githubapps.core.utils.Constant
 import com.mascill.githubapps.core.utils.parcelable
 import com.mascill.githubapps.databinding.ActivityDetailBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private var buttonState: Boolean = false
+    private val detailViewModel: DetailViewModel by viewModel()
     private lateinit var data: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,38 +72,25 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun showData(data: User) {
-        with(binding) {
+        Glide.with(this@DetailActivity)
+            .load(data.avatarUrl)
+            .apply(RequestOptions().fitCenter())
+            .into(binding.ciUserPhoto)
 
-            Glide.with(this@DetailActivity)
-                .load(data.avatarUrl)
-                .apply(RequestOptions().fitCenter())
-                .into(binding.ciUserPhoto)
+        var statusFavorite = data.isFavorite
+        setStatusFavorite(statusFavorite)
+        binding.fabFavorite.setOnClickListener {
+            statusFavorite = !statusFavorite
+            detailViewModel.setFavoriteTourism(data, statusFavorite)
+            setStatusFavorite(statusFavorite)
+        }
+    }
 
-
-            val dataFavorite = UserEntity(
-                id = data.id,
-                login = data.login,
-                avatarUrl = data.avatarUrl,
-                url = data.url,
-                type = data.type,
-                isFavorite = false
-            )
-
-            // Favorite event
-            fabFavorite.setOnClickListener {
-                if (!buttonState) {
-                    buttonState = true
-                    fabFavorite.setImageResource(R.drawable.baseline_favorite_24)
-                } else {
-                    buttonState = false
-                    fabFavorite.setImageResource(R.drawable.baseline_favorite_border_24)
-                    Toast.makeText(
-                        this@DetailActivity,
-                        "Favorite user has been deleted.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+    private fun setStatusFavorite(statusFavorite: Boolean) {
+        if (statusFavorite) {
+            binding.fabFavorite.setImageResource(R.drawable.baseline_favorite_24)
+        } else {
+            binding.fabFavorite.setImageResource(R.drawable.baseline_favorite_border_24)
         }
     }
 }

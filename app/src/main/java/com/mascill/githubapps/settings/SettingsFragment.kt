@@ -38,19 +38,20 @@ class SettingsFragment : Fragment() {
         (requireActivity() as AppCompatActivity).supportActionBar?.title =
             getString(R.string.settings)
 
-
-        with(binding) {
-            themeViewModel.getTheme().observe(viewLifecycleOwner) {
-                if (it) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    switchTheme.isChecked = true
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    switchTheme.isChecked = false
+        if (activity != null) {
+            with(binding) {
+                themeViewModel.getTheme().observe(viewLifecycleOwner) {
+                    if (it) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        switchTheme.isChecked = true
+                    } else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        switchTheme.isChecked = false
+                    }
                 }
-            }
-            switchTheme.setOnCheckedChangeListener { _, isChecked ->
-                themeViewModel.saveTheme(isChecked)
+                switchTheme.setOnCheckedChangeListener { _, isChecked ->
+                    themeViewModel.saveTheme(isChecked)
+                }
             }
         }
 
