@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mascill.githubapps.core.data.Resource
 import com.mascill.githubapps.core.ui.RecyclerViewClickListener
 import com.mascill.githubapps.core.ui.UserAdapter
+import com.mascill.githubapps.core.utils.Constant
 import com.mascill.githubapps.databinding.FragmentHomeBinding
+import com.mascill.githubapps.detail.DetailActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), RecyclerViewClickListener {
@@ -76,11 +78,6 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
                 }
             }
 
-//            with(binding.rvTourism) {
-//                layoutManager = LinearLayoutManager(context)
-//                setHasFixedSize(true)
-//                adapter = userAdapter
-//            }
         }
     }
 
@@ -90,8 +87,9 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
     }
 
     override fun onItemClicked(position: Int) {
-//        val intent = Intent(activity, DetailTourismActivity::class.java)
-//        intent.putExtra(DetailTourismActivity.EXTRA_DATA, selectedData)
-//        startActivity(intent)
+        val item = userAdapter.getItem(position)
+        val detailIntent = Intent(requireContext(), DetailActivity::class.java)
+        detailIntent.putExtra(Constant.USER_DATA, item)
+        startActivity(detailIntent)
     }
 }
