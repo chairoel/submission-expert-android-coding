@@ -7,4 +7,11 @@
     <string name="searchbar_hint">Who are you looking for?</string>
     <string name="empty_data">empty_data</string>
     <string name="data_not_found">Result Not Found</string>
+
+    <string name="followers">Followers</string>
+    <string name="repository">Repository</string>
+    <string name="following">Following</string>
+    <string name="favorite">Favorite</string>
+    <string name="tabs_for_fragment">Tabs for fragment</string>
+    <string name="share">Share</string>
 </resources>

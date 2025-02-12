@@ -12,6 +12,7 @@ import com.mascill.githubapps.core.data.source.remote.network.ApiService
 import com.mascill.githubapps.core.domain.repository.IThemeRepository
 import com.mascill.githubapps.core.domain.repository.IUserRepository
 import com.mascill.githubapps.core.utils.AppExecutors
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -23,6 +24,8 @@ import java.util.concurrent.TimeUnit
 
 val databaseModule = module {
     factory { get<GithubDatabase>().userDao() }
+    factory { get<GithubDatabase>().userDetailsDao() }
+    factory { get<GithubDatabase>().userFavoriteDao() }
     single {
         Room.databaseBuilder(
             androidContext(),
@@ -33,8 +36,15 @@ val databaseModule = module {
 
 val networkModule = module {
     single {
+        val authInterceptor = Interceptor { chain ->
+            val req = chain.request()
+            val requestHeaders = req.newBuilder()
+                .addHeader("token", "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")
+                .build()
+            chain.proceed(requestHeaders)
+        }
         OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .addInterceptor(authInterceptor)
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
             .build()
@@ -56,7 +66,7 @@ val datastoreModule = module {
 }
 
 val repositoryModule = module {
-    single { LocalDataSource(get()) }
+    single { LocalDataSource(get(), get(), get()) }
     single { RemoteDataSource(get()) }
     factory { AppExecutors() }
     single<IUserRepository> {

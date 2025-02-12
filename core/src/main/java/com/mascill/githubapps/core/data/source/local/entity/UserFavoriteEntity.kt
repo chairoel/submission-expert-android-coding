@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "user")
-class UserEntity(
+@Entity(tableName = "user_favorite")
+class UserFavoriteEntity(
     @field:ColumnInfo(name = "id")
     @field:PrimaryKey(autoGenerate = false)
     val id: Long,
@@ -20,5 +20,5 @@ class UserEntity(
     val type: String,
 
     @field:ColumnInfo(name = "url")
-    val url: String
+    val url: String,
 )

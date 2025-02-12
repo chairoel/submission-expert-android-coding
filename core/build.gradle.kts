@@ -56,7 +56,7 @@ dependencies {
     api(libs.androidx.navigation.ui.ktx)
 
 
-    implementation("de.hdodenhof:circleimageview:3.1.0")
+    api("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 

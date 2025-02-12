@@ -5,16 +5,17 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.mascill.githubapps.core.data.source.local.entity.UserDetailsEntity
 import com.mascill.githubapps.core.data.source.local.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface UserDao {
+interface UserDetailsDao {
 
-    @Query("SELECT * FROM user")
-    fun getAllUsers(): Flow<List<UserEntity>>
+    @Query("SELECT * FROM user_details WHERE login = :username")
+    fun getUserDetails(username : String): Flow<UserDetailsEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUsers(user: List<UserEntity>)
+    suspend fun insertUserDetails(user: UserDetailsEntity)
 
 }
