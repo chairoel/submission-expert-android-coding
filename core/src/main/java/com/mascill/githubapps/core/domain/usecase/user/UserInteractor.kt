@@ -10,4 +10,6 @@ class UserInteractor (private val userRepository: IUserRepository): UserUseCase 
     override fun getFavoriteUser() = userRepository.getUserFavorites()
 
     override fun setFavoriteUser(user: User, state: Boolean) = userRepository.setUserFavorite(user, state)
+
+    override fun searchUsers(username: String) = userRepository.searchUsers(username)
 }

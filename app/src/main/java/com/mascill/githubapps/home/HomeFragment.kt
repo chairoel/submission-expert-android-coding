@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mascill.githubapps.core.data.Resource
 import com.mascill.githubapps.core.ui.RecyclerViewClickListener
 import com.mascill.githubapps.core.ui.UserAdapter
+import com.mascill.githubapps.core.ui.viewmodel.SearchViewModel
 import com.mascill.githubapps.core.utils.Constant
 import com.mascill.githubapps.databinding.FragmentHomeBinding
 import com.mascill.githubapps.detail.DetailActivity
@@ -22,6 +23,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
     private val binding get() = _binding!!
 
     private val homeViewModel: HomeViewModel by viewModel()
+    private val searchViewModel: SearchViewModel by viewModel()
     private lateinit var userAdapter: UserAdapter
 
     override fun onCreateView(
@@ -47,7 +49,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
                     if (username.isEmpty()) {
                         homeViewModel.fetchUsers()
                     } else {
-//                        searchViewModel.getSearchUser(username)
+                        searchViewModel.searchUsers(username)
                     }
                     true
                 }
@@ -75,6 +77,14 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
 
                         is Resource.Error -> {}
                     }
+                }
+            }
+
+            searchViewModel.searchResults.observe(viewLifecycleOwner){users ->
+                if (users != null){
+                    userAdapter.setItems(users)
+                    binding.tvEmptyData.visibility =
+                        if (users.isEmpty()) View.VISIBLE else View.GONE
                 }
             }
 

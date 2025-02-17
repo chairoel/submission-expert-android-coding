@@ -44,4 +44,8 @@ class UserRepository(
         val userEntity = DataMapper.mapDomainToEntity(user)
         appExecutors.diskIO().execute { localDataSource.updateUserFavorite(userEntity, state) }
     }
+
+    override fun searchUsers(username: String):Flow<List<User>> {
+        return localDataSource.searchUsers(username).map { DataMapper.mapEntitiesToDomain(it) }
+    }
 }

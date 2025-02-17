@@ -12,4 +12,6 @@ interface IUserRepository {
     fun getUserFavorites(): Flow<List<User>>
 
     fun setUserFavorite(user: User, state: Boolean)
+
+    fun searchUsers(username: String):Flow<List<User>>
 }

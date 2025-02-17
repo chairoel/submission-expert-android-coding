@@ -4,6 +4,7 @@ import com.mascill.githubapps.core.domain.usecase.theme.ThemeInteractor
 import com.mascill.githubapps.core.domain.usecase.theme.ThemeUseCase
 import com.mascill.githubapps.core.domain.usecase.user.UserInteractor
 import com.mascill.githubapps.core.domain.usecase.user.UserUseCase
+import com.mascill.githubapps.core.ui.viewmodel.SearchViewModel
 import com.mascill.githubapps.core.ui.viewmodel.ThemeViewModel
 import com.mascill.githubapps.detail.DetailViewModel
 import com.mascill.githubapps.home.HomeViewModel
@@ -21,4 +22,5 @@ val viewModelModule = module {
     viewModel { DetailViewModel(get()) }
     viewModel { SettingsViewModel() }
     viewModel { ThemeViewModel(get()) }
+    viewModel { SearchViewModel(get()) }
 }
