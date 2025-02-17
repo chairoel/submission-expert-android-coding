@@ -2,8 +2,8 @@ package com.mascill.githubapps.di
 
 import com.mascill.githubapps.core.domain.usecase.theme.ThemeInteractor
 import com.mascill.githubapps.core.domain.usecase.theme.ThemeUseCase
-import com.mascill.githubapps.core.domain.usecase.UserInteractor
-import com.mascill.githubapps.core.domain.usecase.UserUseCase
+import com.mascill.githubapps.core.domain.usecase.user.UserInteractor
+import com.mascill.githubapps.core.domain.usecase.user.UserUseCase
 import com.mascill.githubapps.core.ui.viewmodel.ThemeViewModel
 import com.mascill.githubapps.detail.DetailViewModel
 import com.mascill.githubapps.home.HomeViewModel

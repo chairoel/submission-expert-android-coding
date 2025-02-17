@@ -20,4 +20,6 @@
     <string name="data_is_empty">Data is Empty</string>
     <string name="favorite_user">Favorite User</string>
     <string name="tabs_for_fragment">Tabs for fragment</string>
+    <string name="type">Type</string>
+    <string name="name">Name</string>
 </resources>

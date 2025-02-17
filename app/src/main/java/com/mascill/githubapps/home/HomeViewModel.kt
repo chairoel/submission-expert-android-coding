@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mascill.githubapps.core.data.Resource
 import com.mascill.githubapps.core.domain.model.User
-import com.mascill.githubapps.core.domain.usecase.UserUseCase
+import com.mascill.githubapps.core.domain.usecase.user.UserUseCase
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val userUseCase: UserUseCase) : ViewModel() {

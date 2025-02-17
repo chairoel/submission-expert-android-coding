@@ -1,20 +1,15 @@
 package com.mascill.githubapps.detail
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mascill.githubapps.R
-import com.mascill.githubapps.core.data.source.local.entity.UserEntity
 import com.mascill.githubapps.core.domain.model.User
 import com.mascill.githubapps.core.utils.Constant
 import com.mascill.githubapps.core.utils.parcelable
@@ -41,7 +36,7 @@ class DetailActivity : AppCompatActivity() {
         }
         val username = item!!.login
 
-        supportActionBar?.title = username
+        supportActionBar?.title = "Detail User"
         showData(data)
     }
 
@@ -84,7 +79,17 @@ class DetailActivity : AppCompatActivity() {
             detailViewModel.setFavoriteTourism(data, statusFavorite)
             setStatusFavorite(statusFavorite)
         }
+
+        binding.tvUsername.text = data.login
+        binding.tvType.text = data.type
     }
+
+    private fun goToUrl(url: String) {
+        val uriUrl: Uri = Uri.parse(url)
+        val launchBrowser = Intent(Intent.ACTION_VIEW, uriUrl)
+        startActivity(launchBrowser)
+    }
+
 
     private fun setStatusFavorite(statusFavorite: Boolean) {
         if (statusFavorite) {

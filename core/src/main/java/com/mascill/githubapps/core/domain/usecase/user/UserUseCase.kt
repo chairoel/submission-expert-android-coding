@@ -1,4 +1,4 @@
-package com.mascill.githubapps.core.domain.usecase
+package com.mascill.githubapps.core.domain.usecase.user
 
 import com.mascill.githubapps.core.data.Resource
 import com.mascill.githubapps.core.domain.model.User
