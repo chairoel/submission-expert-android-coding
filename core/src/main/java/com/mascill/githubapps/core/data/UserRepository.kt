@@ -3,7 +3,9 @@ package com.mascill.githubapps.core.data
 import com.mascill.githubapps.core.data.source.local.LocalDataSource
 import com.mascill.githubapps.core.data.source.remote.RemoteDataSource
 import com.mascill.githubapps.core.data.source.remote.network.ApiResponse
+import com.mascill.githubapps.core.data.source.remote.response.DetailUserResponse
 import com.mascill.githubapps.core.data.source.remote.response.UserResponse
+import com.mascill.githubapps.core.domain.model.DetailUser
 import com.mascill.githubapps.core.domain.model.User
 import com.mascill.githubapps.core.domain.repository.IUserRepository
 import com.mascill.githubapps.core.utils.AppExecutors
@@ -44,4 +46,23 @@ class UserRepository(
         val userEntity = DataMapper.mapDomainToEntity(user)
         appExecutors.diskIO().execute { localDataSource.updateUserFavorite(userEntity, state) }
     }
+
+    override fun getDetailUser(): Flow<Resource<DetailUser>> =
+        object : NetworkBoundResource<DetailUser, DetailUserResponse>(appExecutors) {
+            override fun loadFromDB(): Flow<DetailUser> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun createCall(): Flow<ApiResponse<DetailUserResponse>> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun saveCallResult(data: DetailUserResponse) {
+                TODO("Not yet implemented")
+            }
+
+            override fun shouldFetch(data: DetailUser?): Boolean {
+                TODO("Not yet implemented")
+            }
+        }.asFlow()
 }

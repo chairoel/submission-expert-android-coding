@@ -3,6 +3,7 @@ package com.mascill.githubapps.core.data.source.remote
 import android.util.Log
 import com.mascill.githubapps.core.data.source.remote.network.ApiResponse
 import com.mascill.githubapps.core.data.source.remote.network.ApiService
+import com.mascill.githubapps.core.data.source.remote.response.DetailUserResponse
 import com.mascill.githubapps.core.data.source.remote.response.UserResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +18,23 @@ class RemoteDataSource(private val apiService: ApiService) {
             try {
                 val response = apiService.getAllUsers()
                 if (response.isNotEmpty()) {
+                    emit(ApiResponse.Success(response))
+                } else {
+                    emit(ApiResponse.Empty)
+                }
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getDetailUser(username: String): Flow<ApiResponse<DetailUserResponse>> {
+        //get data from remote api
+        return flow {
+            try {
+                val response = apiService.getDetailUser(username)
+                if (response.id != null) {
                     emit(ApiResponse.Success(response))
                 } else {
                     emit(ApiResponse.Empty)

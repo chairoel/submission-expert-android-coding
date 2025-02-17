@@ -2,6 +2,7 @@ package com.mascill.githubapps.core.domain.repository
 
 
 import com.mascill.githubapps.core.data.Resource
+import com.mascill.githubapps.core.domain.model.DetailUser
 import com.mascill.githubapps.core.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
@@ -12,4 +13,6 @@ interface IUserRepository {
     fun getUserFavorites(): Flow<List<User>>
 
     fun setUserFavorite(user: User, state: Boolean)
+
+    fun getDetailUser():Flow<Resource<DetailUser>>
 }
