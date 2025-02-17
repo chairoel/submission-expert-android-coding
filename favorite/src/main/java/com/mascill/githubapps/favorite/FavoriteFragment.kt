@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mascill.githubapps.R
-import com.mascill.githubapps.core.data.Resource
 import com.mascill.githubapps.core.ui.RecyclerViewClickListener
 import com.mascill.githubapps.core.ui.UserAdapter
 import com.mascill.githubapps.core.utils.Constant
