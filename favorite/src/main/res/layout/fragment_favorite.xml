@@ -19,7 +19,6 @@
         android:id="@+id/rv_user"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/search_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar"
@@ -37,9 +36,9 @@
         android:textSize="32sp"
         android:visibility="gone"
         app:drawableTopCompat="@drawable/data_empty"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_user"
-        app:layout_constraintEnd_toEndOf="@+id/rv_user"
-        app:layout_constraintStart_toStartOf="@+id/rv_user"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rv_user"
         tools:visibility="visible" />
 
