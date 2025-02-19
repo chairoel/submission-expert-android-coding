@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mascill.githubapps.R
-import com.mascill.githubapps.core.ui.RecyclerViewClickListener
-import com.mascill.githubapps.core.ui.UserAdapter
+import com.mascill.githubapps.core.domain.model.User
+import com.mascill.githubapps.core.ui.adapter.RecyclerViewClickListener
+import com.mascill.githubapps.core.ui.adapter.UserAdapter
 import com.mascill.githubapps.core.utils.Constant
 import com.mascill.githubapps.detail.DetailActivity
 import com.mascill.githubapps.favorite.databinding.FragmentFavoriteBinding
@@ -42,9 +43,9 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
         (requireActivity() as AppCompatActivity).supportActionBar?.title =
             getString(R.string.favorite)
 
-        if (activity != null) {
+        loadKoinModules(favoriteModule)
 
-            loadKoinModules(favoriteModule)
+        if (activity != null) {
 
             with(binding) {
 
@@ -58,7 +59,7 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
 
             favoriteFragment.favoriteUser.observe(viewLifecycleOwner) { users ->
                 users.let { data ->
-                    userAdapter.setItems(data)
+                    userAdapter.submitList(users)
                     binding.tvEmptyData.visibility =
                         if (data.isEmpty()) View.VISIBLE else View.GONE
                 }
@@ -72,10 +73,9 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
         _binding = null
     }
 
-    override fun onItemClicked(position: Int) {
-        val item = userAdapter.getItem(position)
+    override fun onItemClicked(user: User) {
         val detailIntent = Intent(requireContext(), DetailActivity::class.java)
-        detailIntent.putExtra(Constant.USER_DATA, item)
+        detailIntent.putExtra(Constant.USER_DATA, user)
         startActivity(detailIntent)
     }
 }

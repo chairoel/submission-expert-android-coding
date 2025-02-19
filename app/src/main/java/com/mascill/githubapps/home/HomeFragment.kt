@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mascill.githubapps.core.data.Resource
-import com.mascill.githubapps.core.ui.RecyclerViewClickListener
-import com.mascill.githubapps.core.ui.UserAdapter
+import com.mascill.githubapps.core.domain.model.User
+import com.mascill.githubapps.core.ui.adapter.RecyclerViewClickListener
+import com.mascill.githubapps.core.ui.adapter.UserAdapter
 import com.mascill.githubapps.core.ui.viewmodel.SearchViewModel
 import com.mascill.githubapps.core.utils.Constant
 import com.mascill.githubapps.databinding.FragmentHomeBinding
@@ -69,7 +69,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
 
                         is Resource.Success -> {
                             users.data?.let { data ->
-                                userAdapter.setItems(data)
+                                userAdapter.submitList(data)
                                 binding.tvEmptyData.visibility =
                                     if (data.isEmpty()) View.VISIBLE else View.GONE
                             }
@@ -82,7 +82,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
 
             searchViewModel.searchResults.observe(viewLifecycleOwner){users ->
                 if (users != null){
-                    userAdapter.setItems(users)
+                    userAdapter.submitList(users)
                     binding.tvEmptyData.visibility =
                         if (users.isEmpty()) View.VISIBLE else View.GONE
                 }
@@ -96,10 +96,9 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
         _binding = null
     }
 
-    override fun onItemClicked(position: Int) {
-        val item = userAdapter.getItem(position)
+    override fun onItemClicked(user: User) {
         val detailIntent = Intent(requireContext(), DetailActivity::class.java)
-        detailIntent.putExtra(Constant.USER_DATA, item)
+        detailIntent.putExtra(Constant.USER_DATA, user)
         startActivity(detailIntent)
     }
 }
