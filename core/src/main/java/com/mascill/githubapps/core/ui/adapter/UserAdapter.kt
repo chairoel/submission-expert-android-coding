@@ -17,11 +17,11 @@ class UserAdapter(
 ) : ListAdapter<User, UserAdapter.ViewHolder>(object : DiffUtil.ItemCallback<User>() {
 
     override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem.id == newItem.id // Bandingkan berdasarkan ID user
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem == newItem // Bandingkan seluruh isi objek
+        return oldItem == newItem
     }
 }) {
 
@@ -34,7 +34,7 @@ class UserAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = getItem(position) // Menggunakan `getItem()` dari ListAdapter
+        val user = getItem(position)
         with(holder) {
             binding.tvUsername.text = user.login
             binding.tvProfileType.text = user.type
@@ -59,9 +59,5 @@ class UserAdapter(
                 onItemClickCallback.onItemClicked(user)
             }
         }
-    }
-
-    fun getItemAt(position: Int): User? {
-        return if (position in 0 until itemCount) getItem(position) else null
     }
 }
