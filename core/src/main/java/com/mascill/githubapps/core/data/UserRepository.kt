@@ -3,7 +3,9 @@ package com.mascill.githubapps.core.data
 import com.mascill.githubapps.core.data.source.local.LocalDataSource
 import com.mascill.githubapps.core.data.source.remote.RemoteDataSource
 import com.mascill.githubapps.core.data.source.remote.network.ApiResponse
+import com.mascill.githubapps.core.data.source.remote.response.DetailUserResponse
 import com.mascill.githubapps.core.data.source.remote.response.UserResponse
+import com.mascill.githubapps.core.domain.model.DetailUser
 import com.mascill.githubapps.core.domain.model.User
 import com.mascill.githubapps.core.domain.repository.IUserRepository
 import com.mascill.githubapps.core.utils.AppExecutors
@@ -36,6 +38,17 @@ class UserRepository(
             }
         }.asFlow()
 
+    override fun getDetailUsers(username: String): Flow<Resource<DetailUser>> =
+        object : NetworkResource<DetailUser, DetailUserResponse>() {
+            override suspend fun createCall(): Flow<ApiResponse<DetailUserResponse>> {
+                return remoteDataSource.getDetailUsers(username)
+            }
+
+            override fun convertResponseToResult(data: DetailUserResponse): DetailUser {
+                return DataMapper.mapDetailResponsesToDomain(data)
+            }
+        }.asFlow()
+
     override fun getUserFavorites(): Flow<List<User>> {
         return localDataSource.getUserFavorites().map { DataMapper.mapEntitiesToDomain(it) }
     }
@@ -45,7 +58,7 @@ class UserRepository(
         appExecutors.diskIO().execute { localDataSource.updateUserFavorite(userEntity, state) }
     }
 
-    override fun searchUsers(username: String):Flow<List<User>> {
+    override fun searchUsers(username: String): Flow<List<User>> {
         return localDataSource.searchUsers(username).map { DataMapper.mapEntitiesToDomain(it) }
     }
 }
