@@ -79,4 +79,7 @@ dependencies {
     api(libs.junit)
     api(libs.androidx.junit)
     api(libs.androidx.espresso.core)
+
+    testImplementation ("org.mockito:mockito-core:4.4.0")
+    testImplementation("org.mockito:mockito-inline:4.4.0")
 }
