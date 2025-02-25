@@ -15,6 +15,7 @@ import com.mascill.githubapps.core.data.Resource
 import com.mascill.githubapps.core.domain.model.DetailUser
 import com.mascill.githubapps.core.domain.model.User
 import com.mascill.githubapps.core.utils.Constant
+import com.mascill.githubapps.core.utils.convertToK
 import com.mascill.githubapps.core.utils.hideLoading
 import com.mascill.githubapps.core.utils.parcelable
 import com.mascill.githubapps.core.utils.showLoading
@@ -41,32 +42,30 @@ class DetailActivity : AppCompatActivity() {
         }
         val username = item!!.login
         detailViewModel.getDetailUser(username)
-
-        supportActionBar?.title = "Detail User"
-//        showData(data)
+        supportActionBar?.title = username
 
         detailViewModel.detailUser.observe(this@DetailActivity){
             if (it != null) {
                 when (it) {
                     is Resource.Loading -> {
-//                        showLoading(binding.loading)
+                        showLoading(binding.loading)
                     }
 
                     is Resource.Success -> {
-//                        hideLoading(binding.loading)
-                        it.data?.let { data ->
+                        hideLoading(binding.loading)
+                        it.data?.let { result ->
 
-                            Log.d("TAG", "onCreate: data: $data")
-                            showData(data)
+                            Log.d("TAG", "onCreate: data: $result")
+                            showData(result, data)
                         }
-//                        binding.layoutDetailVisibility.visibility = View.VISIBLE
-//                        binding.tvEmptyData.visibility = View.GONE
+                        binding.layoutDetailVisibility.visibility = View.VISIBLE
+                        binding.tvEmptyData.visibility = View.GONE
                     }
 
                     is Resource.Error -> {
-//                        binding.layoutDetailVisibility.visibility = View.GONE
-//                        binding.tvEmptyData.visibility = View.VISIBLE
-//                        hideLoading(binding.loading)
+                        binding.layoutDetailVisibility.visibility = View.GONE
+                        binding.tvEmptyData.visibility = View.VISIBLE
+                        hideLoading(binding.loading)
                     }
                 }
             }
@@ -99,30 +98,30 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    private fun showData(data: DetailUser) {
+    private fun showData(data: DetailUser, dataUser: User) {
+        with(binding) {
         Glide.with(this@DetailActivity)
             .load(data.avatarUrl)
             .apply(RequestOptions().fitCenter())
             .into(binding.ciUserPhoto)
 
-//        var statusFavorite = data.isFavorite
-//        setStatusFavorite(statusFavorite)
-//        binding.fabFavorite.setOnClickListener {
-//            statusFavorite = !statusFavorite
-//            detailViewModel.setFavoriteTourism(data, statusFavorite)
-//            setStatusFavorite(statusFavorite)
-//        }
+        tvRepository.text = convertToK(data.publicRepos)
+        tvFollowers.text = convertToK(data.followers)
+        tvFollowing.text = convertToK(data.following)
 
-        binding.tvUsername.text = data.login
-        binding.tvType.text = data.type
+        tvUsername.text = data.name
+        tvCompany.text = data.company
+        tvLocation.text = data.location
+
+        var statusFavorite = dataUser.isFavorite
+        setStatusFavorite(statusFavorite)
+        binding.fabFavorite.setOnClickListener {
+            statusFavorite = !statusFavorite
+            detailViewModel.setFavoriteTourism(dataUser, statusFavorite)
+            setStatusFavorite(statusFavorite)
+        }
+        }
     }
-
-    private fun goToUrl(url: String) {
-        val uriUrl: Uri = Uri.parse(url)
-        val launchBrowser = Intent(Intent.ACTION_VIEW, uriUrl)
-        startActivity(launchBrowser)
-    }
-
 
     private fun setStatusFavorite(statusFavorite: Boolean) {
         if (statusFavorite) {
