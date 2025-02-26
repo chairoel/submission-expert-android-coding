@@ -1,7 +1,6 @@
 package com.mascill.githubapps.detail
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -10,6 +9,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mascill.githubapps.R
 import com.mascill.githubapps.core.data.Resource
 import com.mascill.githubapps.core.domain.model.DetailUser
@@ -44,7 +44,7 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel.getDetailUser(username)
         supportActionBar?.title = username
 
-        detailViewModel.detailUser.observe(this@DetailActivity){
+        detailViewModel.detailUser.observe(this@DetailActivity) {
             if (it != null) {
                 when (it) {
                     is Resource.Loading -> {
@@ -100,34 +100,34 @@ class DetailActivity : AppCompatActivity() {
 
     private fun showData(data: DetailUser, dataUser: User) {
         with(binding) {
-        Glide.with(this@DetailActivity)
-            .load(data.avatarUrl)
-            .apply(RequestOptions().fitCenter())
-            .into(binding.ciUserPhoto)
+            Glide.with(this@DetailActivity)
+                .load(data.avatarUrl)
+                .apply(RequestOptions().fitCenter())
+                .into(ciUserPhoto)
 
-        tvRepository.text = convertToK(data.publicRepos)
-        tvFollowers.text = convertToK(data.followers)
-        tvFollowing.text = convertToK(data.following)
+            tvRepository.text = convertToK(data.publicRepos)
+            tvFollowers.text = convertToK(data.followers)
+            tvFollowing.text = convertToK(data.following)
 
-        tvUsername.text = data.name
-        tvCompany.text = data.company
-        tvLocation.text = data.location
+            tvUsername.text = data.name
+            tvCompany.text = data.company
+            tvLocation.text = data.location
 
-        var statusFavorite = dataUser.isFavorite
-        setStatusFavorite(statusFavorite)
-        binding.fabFavorite.setOnClickListener {
-            statusFavorite = !statusFavorite
-            detailViewModel.setFavoriteTourism(dataUser, statusFavorite)
-            setStatusFavorite(statusFavorite)
-        }
+            var statusFavorite = dataUser.isFavorite
+            setStatusFavorite(fabFavorite, statusFavorite)
+            fabFavorite.setOnClickListener {
+                statusFavorite = !statusFavorite
+                detailViewModel.setFavoriteTourism(dataUser, statusFavorite)
+                setStatusFavorite(fabFavorite, statusFavorite)
+            }
         }
     }
 
-    private fun setStatusFavorite(statusFavorite: Boolean) {
+    private fun setStatusFavorite(fabFavorite: FloatingActionButton, statusFavorite: Boolean) {
         if (statusFavorite) {
-            binding.fabFavorite.setImageResource(R.drawable.baseline_favorite_24)
+            fabFavorite.setImageResource(R.drawable.baseline_favorite_24)
         } else {
-            binding.fabFavorite.setImageResource(R.drawable.baseline_favorite_border_24)
+            fabFavorite.setImageResource(R.drawable.baseline_favorite_border_24)
         }
     }
 }

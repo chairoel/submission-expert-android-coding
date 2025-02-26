@@ -1,7 +1,5 @@
 package com.mascill.githubapps.core.domain.usecase.user
 
-import android.util.Log
-import com.google.gson.Gson
 import com.mascill.githubapps.core.data.Resource
 import com.mascill.githubapps.core.domain.model.DetailUser
 import com.mascill.githubapps.core.domain.model.User

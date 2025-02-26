@@ -2,7 +2,6 @@ package com.mascill.githubapps.core.data.source.remote.network
 
 import com.mascill.githubapps.core.data.source.remote.response.DetailUserResponse
 import com.mascill.githubapps.core.data.source.remote.response.UserResponse
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 

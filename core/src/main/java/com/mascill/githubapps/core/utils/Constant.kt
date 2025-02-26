@@ -5,5 +5,4 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 object Constant {
     val THEME_KEY = booleanPreferencesKey("theme_setting")
     const val USER_DATA = "user_data"
-    const val ARG_USERNAME = "username"
 }
