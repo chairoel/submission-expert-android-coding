@@ -56,9 +56,9 @@ dependencies {
     api(libs.androidx.navigation.ui.ktx)
 
 
-    api("de.hdodenhof:circleimageview:3.1.0")
+    api(libs.circleimageview)
 
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.androidx.datastore.preferences)
 
 
     implementation(libs.room.runtime)
@@ -80,6 +80,6 @@ dependencies {
     api(libs.androidx.junit)
     api(libs.androidx.espresso.core)
 
-    testImplementation ("org.mockito:mockito-core:4.4.0")
-    testImplementation("org.mockito:mockito-inline:4.4.0")
+    testImplementation (libs.mockito.core)
+    testImplementation(libs.mockito.inline)
 }
