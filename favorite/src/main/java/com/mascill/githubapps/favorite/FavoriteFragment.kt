@@ -2,12 +2,15 @@ package com.mascill.githubapps.favorite
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.play.core.splitinstall.SplitInstallManager
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.mascill.githubapps.R
 import com.mascill.githubapps.core.domain.model.User
 import com.mascill.githubapps.core.ui.adapter.RecyclerViewClickListener
@@ -25,6 +28,7 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
 
     private val favoriteFragment: FavoriteViewModel by viewModel()
     private lateinit var userAdapter: UserAdapter
+    private lateinit var splitInstallManager: SplitInstallManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +47,14 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
         (requireActivity() as AppCompatActivity).supportActionBar?.title =
             getString(R.string.favorite)
 
-        loadKoinModules(favoriteModule)
+       splitInstallManager = SplitInstallManagerFactory.create(requireContext())
+
+        if (splitInstallManager.installedModules.contains("favorite")) {
+            Log.d("DynamicModule", "Favorite module sudah terinstall, memuat fragment...")
+            loadKoinModules(favoriteModule)
+        } else {
+            Log.d("DynamicModule", "Favorite module belum terinstall, tidak bisa memuat fragment!")
+        }
 
         if (activity != null) {
 

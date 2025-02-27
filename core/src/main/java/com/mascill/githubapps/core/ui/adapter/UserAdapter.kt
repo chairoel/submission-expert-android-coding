@@ -1,5 +1,6 @@
 package com.mascill.githubapps.core.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -35,6 +36,7 @@ class UserAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = getItem(position)
+        Log.d("UserAdapter", "onBindViewHolder: data ${user}")
         with(holder) {
             binding.tvUsername.text = user.login
             binding.tvProfileType.text = user.type

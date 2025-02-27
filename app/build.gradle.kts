@@ -45,4 +45,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    api("com.google.android.play:feature-delivery-ktx:2.1.0")
 }
