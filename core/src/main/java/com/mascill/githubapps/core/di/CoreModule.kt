@@ -12,6 +12,8 @@ import com.mascill.githubapps.core.data.source.remote.network.ApiService
 import com.mascill.githubapps.core.domain.repository.IThemeRepository
 import com.mascill.githubapps.core.domain.repository.IUserRepository
 import com.mascill.githubapps.core.utils.AppExecutors
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -24,10 +26,14 @@ import java.util.concurrent.TimeUnit
 val databaseModule = module {
     factory { get<GithubDatabase>().userDao() }
     single {
+        val passphrase: ByteArray = SQLiteDatabase.getBytes("dicoding".toCharArray())
+        val factory = SupportFactory(passphrase)
         Room.databaseBuilder(
             androidContext(),
             GithubDatabase::class.java, "Github_apps.db"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration()
+            .openHelperFactory(factory)
+            .build()
     }
 }
 
