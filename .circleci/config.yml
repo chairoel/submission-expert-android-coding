@@ -1,19 +1,20 @@
 version: 2.1
 
-orbs:
-  android: circleci/android@0.2.1
+executors:
+  android-executor:
+    docker:
+      - image: cimg/android:2023.10.1
+    resource_class: large
+    working_directory: ~/project
 
 jobs:
   build:
-    executor: android/android
+    executor: android-executor
     steps:
       - checkout
       - run:
-          name: Install Java 17
-          command: |
-            sudo apt update && sudo apt install -y openjdk-17-jdk
-            sudo update-java-alternatives --set java-1.17.0-openjdk-amd64
-            java -version
+          name: Check Java Version
+          command: java -version
       - restore_cache:
           key: android-orb-v1-
       - run:
