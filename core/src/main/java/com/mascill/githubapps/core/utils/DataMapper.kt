@@ -1,7 +1,9 @@
 package com.mascill.githubapps.core.utils
 
 import com.mascill.githubapps.core.data.source.local.entity.UserEntity
+import com.mascill.githubapps.core.data.source.remote.response.DetailUserResponse
 import com.mascill.githubapps.core.data.source.remote.response.UserResponse
+import com.mascill.githubapps.core.domain.model.DetailUser
 import com.mascill.githubapps.core.domain.model.User
 
 object DataMapper {
@@ -40,5 +42,20 @@ object DataMapper {
         type = input.type,
         url = input.url,
         isFavorite = input.isFavorite
+    )
+
+
+    fun mapDetailResponsesToDomain(input: DetailUserResponse) = DetailUser(
+        id = input.id ?: 0,
+        login = input.login ?: "",
+        avatarUrl = input.avatarUrl ?: "",
+        type = input.type ?: "",
+        url = input.url ?: "",
+        name = input.name ?: input.login ?: "",
+        followers = input.followers ?: 0,
+        following = input.following ?: 0,
+        publicRepos = input.publicRepos ?: 0,
+        location = input.location ?: "[Location not Set]",
+        company = input.company ?: "[Company not Set]",
     )
 }

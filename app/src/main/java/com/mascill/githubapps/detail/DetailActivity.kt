@@ -1,18 +1,24 @@
 package com.mascill.githubapps.detail
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mascill.githubapps.R
+import com.mascill.githubapps.core.data.Resource
+import com.mascill.githubapps.core.domain.model.DetailUser
 import com.mascill.githubapps.core.domain.model.User
 import com.mascill.githubapps.core.utils.Constant
+import com.mascill.githubapps.core.utils.convertToK
+import com.mascill.githubapps.core.utils.hideLoading
 import com.mascill.githubapps.core.utils.parcelable
+import com.mascill.githubapps.core.utils.showLoading
 import com.mascill.githubapps.databinding.ActivityDetailBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,9 +41,35 @@ class DetailActivity : AppCompatActivity() {
             data = item
         }
         val username = item!!.login
+        detailViewModel.getDetailUser(username)
+        supportActionBar?.title = username
 
-        supportActionBar?.title = "Detail User"
-        showData(data)
+        detailViewModel.detailUser.observe(this@DetailActivity) {
+            if (it != null) {
+                when (it) {
+                    is Resource.Loading -> {
+                        showLoading(binding.loading)
+                    }
+
+                    is Resource.Success -> {
+                        hideLoading(binding.loading)
+                        it.data?.let { result ->
+
+                            Log.d("TAG", "onCreate: data: $result")
+                            showData(result, data)
+                        }
+                        binding.layoutDetailVisibility.visibility = View.VISIBLE
+                        binding.tvEmptyData.visibility = View.GONE
+                    }
+
+                    is Resource.Error -> {
+                        binding.layoutDetailVisibility.visibility = View.GONE
+                        binding.tvEmptyData.visibility = View.VISIBLE
+                        hideLoading(binding.loading)
+                    }
+                }
+            }
+        }
     }
 
 
@@ -66,36 +98,36 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    private fun showData(data: User) {
-        Glide.with(this@DetailActivity)
-            .load(data.avatarUrl)
-            .apply(RequestOptions().fitCenter())
-            .into(binding.ciUserPhoto)
+    private fun showData(data: DetailUser, dataUser: User) {
+        with(binding) {
+            Glide.with(this@DetailActivity)
+                .load(data.avatarUrl)
+                .apply(RequestOptions().fitCenter())
+                .into(ciUserPhoto)
 
-        var statusFavorite = data.isFavorite
-        setStatusFavorite(statusFavorite)
-        binding.fabFavorite.setOnClickListener {
-            statusFavorite = !statusFavorite
-            detailViewModel.setFavoriteTourism(data, statusFavorite)
-            setStatusFavorite(statusFavorite)
+            tvRepository.text = convertToK(data.publicRepos)
+            tvFollowers.text = convertToK(data.followers)
+            tvFollowing.text = convertToK(data.following)
+
+            tvUsername.text = data.name
+            tvCompany.text = data.company
+            tvLocation.text = data.location
+
+            var statusFavorite = dataUser.isFavorite
+            setStatusFavorite(fabFavorite, statusFavorite)
+            fabFavorite.setOnClickListener {
+                statusFavorite = !statusFavorite
+                detailViewModel.setFavoriteTourism(dataUser, statusFavorite)
+                setStatusFavorite(fabFavorite, statusFavorite)
+            }
         }
-
-        binding.tvUsername.text = data.login
-        binding.tvType.text = data.type
     }
 
-    private fun goToUrl(url: String) {
-        val uriUrl: Uri = Uri.parse(url)
-        val launchBrowser = Intent(Intent.ACTION_VIEW, uriUrl)
-        startActivity(launchBrowser)
-    }
-
-
-    private fun setStatusFavorite(statusFavorite: Boolean) {
+    private fun setStatusFavorite(fabFavorite: FloatingActionButton, statusFavorite: Boolean) {
         if (statusFavorite) {
-            binding.fabFavorite.setImageResource(R.drawable.baseline_favorite_24)
+            fabFavorite.setImageResource(R.drawable.baseline_favorite_24)
         } else {
-            binding.fabFavorite.setImageResource(R.drawable.baseline_favorite_border_24)
+            fabFavorite.setImageResource(R.drawable.baseline_favorite_border_24)
         }
     }
 }

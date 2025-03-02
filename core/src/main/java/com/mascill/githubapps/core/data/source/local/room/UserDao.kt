@@ -22,4 +22,7 @@ interface UserDao {
 
     @Update
     fun updateUserFavorite(user: UserEntity)
+
+    @Query("SELECT * FROM user WHERE login LIKE '%' || :query || '%'")
+    fun searchUsers(query: String): Flow<List<UserEntity>>
 }

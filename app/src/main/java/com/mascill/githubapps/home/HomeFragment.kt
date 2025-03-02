@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mascill.githubapps.core.data.Resource
-import com.mascill.githubapps.core.ui.RecyclerViewClickListener
-import com.mascill.githubapps.core.ui.UserAdapter
+import com.mascill.githubapps.core.domain.model.User
+import com.mascill.githubapps.core.ui.adapter.RecyclerViewClickListener
+import com.mascill.githubapps.core.ui.adapter.UserAdapter
+import com.mascill.githubapps.core.ui.viewmodel.SearchViewModel
 import com.mascill.githubapps.core.utils.Constant
 import com.mascill.githubapps.databinding.FragmentHomeBinding
 import com.mascill.githubapps.detail.DetailActivity
@@ -22,6 +23,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
     private val binding get() = _binding!!
 
     private val homeViewModel: HomeViewModel by viewModel()
+    private val searchViewModel: SearchViewModel by viewModel()
     private lateinit var userAdapter: UserAdapter
 
     override fun onCreateView(
@@ -47,7 +49,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
                     if (username.isEmpty()) {
                         homeViewModel.fetchUsers()
                     } else {
-//                        searchViewModel.getSearchUser(username)
+                        searchViewModel.searchUsers(username)
                     }
                     true
                 }
@@ -67,7 +69,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
 
                         is Resource.Success -> {
                             users.data?.let { data ->
-                                userAdapter.setItems(data)
+                                userAdapter.submitList(data)
                                 binding.tvEmptyData.visibility =
                                     if (data.isEmpty()) View.VISIBLE else View.GONE
                             }
@@ -75,6 +77,14 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
 
                         is Resource.Error -> {}
                     }
+                }
+            }
+
+            searchViewModel.searchResults.observe(viewLifecycleOwner){users ->
+                if (users != null){
+                    userAdapter.submitList(users)
+                    binding.tvEmptyData.visibility =
+                        if (users.isEmpty()) View.VISIBLE else View.GONE
                 }
             }
 
@@ -86,10 +96,9 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
         _binding = null
     }
 
-    override fun onItemClicked(position: Int) {
-        val item = userAdapter.getItem(position)
+    override fun onItemClicked(user: User) {
         val detailIntent = Intent(requireContext(), DetailActivity::class.java)
-        detailIntent.putExtra(Constant.USER_DATA, item)
+        detailIntent.putExtra(Constant.USER_DATA, user)
         startActivity(detailIntent)
     }
 }

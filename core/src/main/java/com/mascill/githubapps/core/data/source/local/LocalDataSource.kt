@@ -13,4 +13,5 @@ class LocalDataSource(private val userDao: UserDao) {
         user.isFavorite = state
         userDao.updateUserFavorite(user)
     }
+    fun searchUsers(username: String):Flow<List<UserEntity>> = userDao.searchUsers(username)
 }
