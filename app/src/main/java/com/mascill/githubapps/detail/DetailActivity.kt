@@ -26,6 +26,7 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private val detailViewModel: DetailViewModel by viewModel()
+    private val favoriteDetailViewModel: FavoriteDetailViewModel by viewModel()
     private lateinit var data: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,7 +118,7 @@ class DetailActivity : AppCompatActivity() {
             setStatusFavorite(fabFavorite, statusFavorite)
             fabFavorite.setOnClickListener {
                 statusFavorite = !statusFavorite
-                detailViewModel.setFavoriteTourism(dataUser, statusFavorite)
+                favoriteDetailViewModel.setFavoriteTourism(dataUser, statusFavorite)
                 setStatusFavorite(fabFavorite, statusFavorite)
             }
         }

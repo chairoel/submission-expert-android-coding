@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mascill.githubapps.core.data.Resource
 import com.mascill.githubapps.core.domain.model.DetailUser
-import com.mascill.githubapps.core.domain.model.User
 import com.mascill.githubapps.core.domain.usecase.user.UserUseCase
 import kotlinx.coroutines.launch
 
@@ -28,9 +27,5 @@ class DetailViewModel(private val userUseCase: UserUseCase) : ViewModel() {
             }
         }
     }
-
-
-    fun setFavoriteTourism(user: User, newStatus:Boolean) =
-        userUseCase.setFavoriteUser(user, newStatus)
 }
 
