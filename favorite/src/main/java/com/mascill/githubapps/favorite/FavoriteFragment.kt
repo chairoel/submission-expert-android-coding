@@ -1,5 +1,6 @@
 package com.mascill.githubapps.favorite
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -40,6 +41,7 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,7 +63,11 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
 
             favoriteFragment.favoriteUser.observe(viewLifecycleOwner) { users ->
                 users.let { data ->
-                    userAdapter.submitList(users)
+                    userAdapter.submitList(users) {
+                        binding.rvUser.post {
+                            userAdapter.notifyDataSetChanged()
+                        }
+                    }
                     binding.tvEmptyData.visibility =
                         if (data.isEmpty()) View.VISIBLE else View.GONE
                 }
