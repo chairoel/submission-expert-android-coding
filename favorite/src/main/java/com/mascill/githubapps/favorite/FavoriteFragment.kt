@@ -24,7 +24,12 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
     private val binding get() = _binding!!
 
     private val favoriteFragment: FavoriteViewModel by viewModel()
-    private lateinit var userAdapter: UserAdapter
+    private val userAdapter by lazy { UserAdapter(this) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        loadKoinModules(favoriteModule)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,13 +48,9 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
         (requireActivity() as AppCompatActivity).supportActionBar?.title =
             getString(R.string.favorite)
 
-        loadKoinModules(favoriteModule)
-
         if (activity != null) {
 
             with(binding) {
-
-                userAdapter = UserAdapter(this@FavoriteFragment)
                 rvUser.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(requireContext())
@@ -70,6 +71,8 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (requireActivity() as AppCompatActivity).setSupportActionBar(null)
+        binding.rvUser.adapter = null
         _binding = null
     }
 

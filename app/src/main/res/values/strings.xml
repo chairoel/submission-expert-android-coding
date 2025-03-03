@@ -5,7 +5,6 @@
     <string name="title_settings">Settings</string>
 
     <string name="searchbar_hint">Who are you looking for?</string>
-    <string name="empty_data">empty_data</string>
     <string name="data_not_found">Result Not Found</string>
 
     <string name="dark_mode">Dark Mode</string>
@@ -13,13 +12,7 @@
     <string name="followers">Followers</string>
     <string name="repository">Repository</string>
     <string name="following">Following</string>
-    <string name="more">More</string>
     <string name="favorite">Favorite</string>
     <string name="settings">Settings</string>
     <string name="share">Share</string>
-    <string name="data_is_empty">Data is Empty</string>
-    <string name="favorite_user">Favorite User</string>
-    <string name="tabs_for_fragment">Tabs for fragment</string>
-    <string name="type">Type</string>
-    <string name="name">Name</string>
 </resources>
