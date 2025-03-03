@@ -73,6 +73,7 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
         super.onDestroyView()
         (requireActivity() as AppCompatActivity).setSupportActionBar(null)
         binding.rvUser.adapter = null
+        binding.appBar.toolbar.setNavigationOnClickListener(null)
         _binding = null
     }
 
