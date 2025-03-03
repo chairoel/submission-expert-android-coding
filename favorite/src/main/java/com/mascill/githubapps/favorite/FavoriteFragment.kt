@@ -24,7 +24,7 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
     private val binding get() = _binding!!
 
     private val favoriteFragment: FavoriteViewModel by viewModel()
-    private val userAdapter by lazy { UserAdapter(this) }
+    private lateinit var userAdapter: UserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +51,7 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
         if (activity != null) {
 
             with(binding) {
+                userAdapter = UserAdapter(this@FavoriteFragment)
                 rvUser.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(requireContext())
