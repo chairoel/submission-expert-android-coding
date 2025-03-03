@@ -33,11 +33,6 @@
 
     <style name="Theme.GithubApps" parent="Base.Theme.GithubApps" />
 
-    <style name="Theme.GithubApps.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="Theme.GithubApps.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.GithubApps.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
