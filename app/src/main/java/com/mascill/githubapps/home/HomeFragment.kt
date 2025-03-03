@@ -93,6 +93,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvUser.adapter = null
         _binding = null
     }
 
