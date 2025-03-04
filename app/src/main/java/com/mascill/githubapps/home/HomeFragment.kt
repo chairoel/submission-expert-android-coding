@@ -13,6 +13,8 @@ import com.mascill.githubapps.core.ui.adapter.RecyclerViewClickListener
 import com.mascill.githubapps.core.ui.adapter.UserAdapter
 import com.mascill.githubapps.core.ui.viewmodel.SearchViewModel
 import com.mascill.githubapps.core.utils.Constant
+import com.mascill.githubapps.core.utils.hideLoading
+import com.mascill.githubapps.core.utils.showLoading
 import com.mascill.githubapps.databinding.FragmentHomeBinding
 import com.mascill.githubapps.detail.DetailActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -65,9 +67,12 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
             homeViewModel.users.observe(viewLifecycleOwner) { users ->
                 if (users != null) {
                     when (users) {
-                        is Resource.Loading -> {}
+                        is Resource.Loading -> {
+                            showLoading(binding.loading)
+                        }
 
                         is Resource.Success -> {
+                            hideLoading(binding.loading)
                             users.data?.let { data ->
                                 userAdapter.submitList(data)
                                 binding.tvEmptyData.visibility =
@@ -75,7 +80,9 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
                             }
                         }
 
-                        is Resource.Error -> {}
+                        is Resource.Error -> {
+                            hideLoading(binding.loading)
+                        }
                     }
                 }
             }
