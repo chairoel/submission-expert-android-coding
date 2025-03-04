@@ -1,21 +1,20 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Keep Resource classes
+-keep class com.mascill.githubapps.core.data.Resource$Error { *; }
+-keep class com.mascill.githubapps.core.data.Resource$Loading { *; }
+-keep class com.mascill.githubapps.core.data.Resource$Success { *; }
+-keep class com.mascill.githubapps.core.data.Resource { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Keep domain models
+-keep class com.mascill.githubapps.core.domain.model.User { *; }
+-keep class com.mascill.githubapps.core.domain.model.DetailUser { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Keep UI-related classes
+-keep class com.mascill.githubapps.core.ui.adapter.UserAdapter { *; }
+-keep class com.mascill.githubapps.core.ui.adapter.RecyclerViewClickListener { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Keep view models
+-keep class com.mascill.githubapps.core.ui.viewmodel.SearchViewModel { *; }
+-keep class com.mascill.githubapps.core.ui.viewmodel.ThemeViewModel { *; }
+
+# Keep data binding classes
+-keep class com.mascill.githubapps.core.databinding.ItemLayoutUserBinding { *; }
