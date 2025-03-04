@@ -1,5 +1,6 @@
 package com.mascill.githubapps.favorite
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,22 +10,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mascill.githubapps.R
-import com.mascill.githubapps.core.domain.model.User
-import com.mascill.githubapps.core.ui.adapter.RecyclerViewClickListener
-import com.mascill.githubapps.core.ui.adapter.UserAdapter
 import com.mascill.githubapps.core.utils.Constant
+import com.mascill.githubapps.core.utils.hideLoading
+import com.mascill.githubapps.core.utils.showLoading
 import com.mascill.githubapps.detail.DetailActivity
 import com.mascill.githubapps.favorite.databinding.FragmentFavoriteBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 
-class FavoriteFragment : Fragment(), RecyclerViewClickListener {
+class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
     private val favoriteFragment: FavoriteViewModel by viewModel()
-    private val userAdapter by lazy { UserAdapter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +39,7 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -50,22 +50,33 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
 
         if (activity != null) {
 
-            with(binding) {
-                rvUser.apply {
-                    setHasFixedSize(true)
-                    layoutManager = LinearLayoutManager(requireContext())
-                    adapter = userAdapter
-                }
+            showLoading(binding.loading)
+
+            val userAdapter = UserFavoriteAdapter()
+            userAdapter.onItemClick = { selectedData ->
+                val detailIntent = Intent(requireContext(), DetailActivity::class.java)
+                detailIntent.putExtra(Constant.USER_DATA, selectedData)
+                startActivity(detailIntent)
             }
 
             favoriteFragment.favoriteUser.observe(viewLifecycleOwner) { users ->
                 users.let { data ->
-                    userAdapter.submitList(users)
+                    userAdapter.submitList(users) {
+                        binding.rvUser.post {
+                            userAdapter.notifyDataSetChanged()
+                        }
+                    }
+                    hideLoading(binding.loading)
                     binding.tvEmptyData.visibility =
                         if (data.isEmpty()) View.VISIBLE else View.GONE
                 }
             }
 
+            with(binding.rvUser) {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = userAdapter
+            }
         }
     }
 
@@ -73,12 +84,7 @@ class FavoriteFragment : Fragment(), RecyclerViewClickListener {
         super.onDestroyView()
         (requireActivity() as AppCompatActivity).setSupportActionBar(null)
         binding.rvUser.adapter = null
+        binding.appBar.toolbar.setNavigationOnClickListener(null)
         _binding = null
-    }
-
-    override fun onItemClicked(user: User) {
-        val detailIntent = Intent(requireContext(), DetailActivity::class.java)
-        detailIntent.putExtra(Constant.USER_DATA, user)
-        startActivity(detailIntent)
     }
 }

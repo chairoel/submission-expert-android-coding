@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-       binding.navView.setupWithNavController(navController)
+        binding.navView.setupWithNavController(navController)
     }
 
     override fun onDestroy() {
